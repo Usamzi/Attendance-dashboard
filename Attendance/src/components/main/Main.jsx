@@ -11,10 +11,11 @@ import { MdMarkEmailUnread } from "react-icons/md";
 import { CiTimer } from "react-icons/ci";
 const Main = () => {
   return (
-    <div className='flex flex-col md:flex-row bg-indigo-100 dark:bg-slate-950'>
+    <div className='flex flex-col md:flex-row bg-gray-100  dark:bg-slate-950'>
+
       <section className='w-auto md:w-[70%] h-full'>
       <div className='w-full flex items-cente justify-between'>
-        <div className='text-indigo-950 m-4 font-bold text-xl md:text-2xl dark:text-transparent bg-clip-text dark:bg-gradient-to-l from-indigo-800 to-pink-800 '>Good Morining, IT Skills Academy</div>
+        
         <div className='flex md:hidden gap-4 items-center justify-end px-4 text-indigo-950 dark:text-slate-800'>
           <IoCalendarOutline/>
           <IoNotificationsOutline/>
@@ -90,52 +91,47 @@ const Main = () => {
         </div>
         <div className='m-4'>
           <div className='text-indigo-950 dark:text-slate-400 font-bold text-2xl my-4'>Recent Transactions</div>
-          <table class="w-full text-sm text-left  dark:text-indigo-500">
-          <thead class="text-xs text-indigo-950 dark:text-slate-400 uppercase bg-gray-50 00 dark:bg-slate-900/50">
+          <table className="w-full text-sm text-left  dark:text-indigo-500">
+          <thead className="text-xs text-indigo-950 dark:text-slate-400 uppercase bg-gray-50 00 dark:bg-slate-900/50">
           <tr>
-              <th scope="col" class="py-3 px-6">Person</th>
-              <th scope="col" class="py-3 px-6">Bank Account</th>
-              <th scope="col" class="py-3 px-6">Amount</th>
+              <th scope="col" className="py-3 px-6">Person</th>
+              <th scope="col" className="py-3 px-6">Bank Account</th>
+              <th scope="col" className="py-3 px-6">Amount</th>
           </tr>
           </thead>
           <tbody className='text-indigo-950 dark:text-slate-400'>
-          <tr class="bg-white dark:bg-slate-900/50 border-b">
-              <td class="py-4 px-6">Alex Johnson</td>
-              <td class="py-4 px-6">82926417</td>
-              <td class="py-4 px-6">$4,500.00</td>
+          <tr className="bg-white dark:bg-slate-900/50 border-b">
+              <td className="py-4 px-6">Alex Johnson</td>
+              <td className="py-4 px-6">82926417</td>
+              <td className="py-4 px-6">$4,500.00</td>
 
           </tr>
           
-          <tr class="bg-white dark:bg-slate-900/50 border-b  ">
-              <td class="py-4 px-6">James Smith</td>
-              <td class="py-4 px-6">90817264</td>
-              <td class="py-4 px-6">$7,820.00</td>
+          <tr className="bg-white dark:bg-slate-900/50 border-b  ">
+              <td className="py-4 px-6">James Smith</td>
+              <td className="py-4 px-6">90817264</td>
+              <td className="py-4 px-6">$7,820.00</td>
 
           </tr>
-          <tr class="bg-white dark:bg-slate-900/50 border-b  ">
-              <td class="py-4 px-6">Patricia Brown</td>
-              <td class="py-4 px-6">26483910</td>
-              <td class="py-4 px-6">$1,230.00</td>
+          <tr className="bg-white dark:bg-slate-900/50 border-b  ">
+              <td className="py-4 px-6">Patricia Brown</td>
+              <td className="py-4 px-6">26483910</td>
+              <td className="py-4 px-6">$1,230.00</td>
 
           </tr>
-          <tr class="bg-white dark:bg-slate-900/50">
-              <td class="py-4 px-6">Ethan Davis</td>
-              <td class="py-4 px-6">64738290</td>
-              <td class="py-4 px-6">$865.00</td>
+          <tr className="bg-white dark:bg-slate-900/50">
+              <td className="py-4 px-6">Ethan Davis</td>
+              <td className="py-4 px-6">64738290</td>
+              <td className="py-4 px-6">$865.00</td>
 
           </tr>
           </tbody>
           </table>
         </div>
       </section>
-      <section className='w-full md:w-[30%] bg-indigo-200 dark:bg-slate-900/20 h-full'>
+      <section className='w-full md:w-[30%] bg-gray-100  dark:bg-slate-900/20 h-full'>
         <div className='flex flex-col m-4 '>
-          <div className='hidden md:flex gap-4 items-center justify-end px-4 text-indigo-950 dark:text-slate-800'>
-            <IoCalendarOutline/>
-            <IoNotificationsOutline/>
-            <MdMarkEmailUnread/>
-            <img src={profile} className='rounded-full w-8 h-8'/>
-          </div>
+          
           <div className='flex flex-col bg-white dark:bg-slate-900/50 gap-6 p-4 m-4 rounded-md h-auto  shadow-lg'>
             <div className=''>
               <div className='font-bold text-indigo-950 dark:text-slate-400'>Formation status</div>
