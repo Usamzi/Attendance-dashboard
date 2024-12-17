@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaBell, FaEnvelope, FaSearch } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -7,15 +8,25 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+  const location = useLocation();
+
+ 
+
+  console.log(location.pathname);
+
+  const url = location.pathname;
+  const newUrl = url.replace("/", ""); 
+  console.log(newUrl, "this is new url"); 
+
 
   return (
     <nav className="bg-gray-200 shadow-md p-4 flex justify-between items-center">
   
-      <h1 className="text-2xl font-bold text-gray-800">Navbar</h1>
+      <h1 className="text-2xl font-bold text-gray-800">{newUrl}</h1>
 
      
       <div className="flex items-center space-x-4">
-        {/* Icons */}
+      
         <FaSearch className="text-gray-600 text-xl cursor-pointer" />
         <FaEnvelope className="text-gray-600 text-xl cursor-pointer" />
         <FaBell className="text-gray-600 text-xl cursor-pointer" />
