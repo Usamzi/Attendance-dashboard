@@ -1,25 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getSchools } from '../api/school/schoolAuth';
+import { getClasses } from '../api/classes/classAuth';
+import Checkbox from "./Checkbox/Checkbox"; 
+import { AiOutlineClose, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { createStudent } from '../api/students/studentAuth';
 
-const StudentForm = ({ addStudent }) => {
+const StudentForm = () => {
   const [studentName, setStudentName] = useState('');
-  const [className, setClassName] = useState('');
-  const [schoolName, setSchoolName] = useState(''); 
+  const [age, setAge] = useState(''); 
+  const [selectedClasses, setSelectedClasses] = useState([]); 
+  const [selectedSchools, setSelectedSchools] = useState([]); 
+  const [schoolOptions, setSchoolOptions] = useState([]);
+  const [classOptions, setClassOptions] = useState([]); 
+  const [dropdownOpen, setDropdownOpen] = useState(''); 
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchSchools = async () => {
+      try {
+        const data = await getSchools();
+        setSchoolOptions(data.data); 
+      } catch (error) {
+        console.error('Error fetching schools:', error);
+      }
+    };
+
+    const fetchClasses = async () => {
+      try {
+        const data = await getClasses();
+        setClassOptions(data.data);
+      } catch (error) {
+        console.error('Error fetching classes:', error);
+      }
+    };
+
+    fetchSchools();
+    fetchClasses();
+  }, []);
+
+  const handleSchoolSelect = (school) => {
+    setSelectedSchools((prevSelected) => 
+      prevSelected._id === school._id ? null : school
+    );
+  };
+
+  const handleClassSelect = (classItem) => {
+    setSelectedClasses((prevSelected) => 
+      prevSelected._id === classItem._id ? null : classItem
+    );
+  };
+
+  const handleClearSelection = (e, type) => {
+    e.stopPropagation();
+    if (type === 'school') {
+      setSelectedSchools(null); 
+    } else if (type === 'class') {
+      setSelectedClasses(null);
+    }
+  };
+
+  const handleDropdownToggle = (type) => {
+    setDropdownOpen((prev) => (prev === type ? '' : type));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newStudent = {
-      studentName,
-      className,
-      schoolName, 
+      name: studentName,
+      SchoolId: selectedSchools ? selectedSchools._id : null,
+      classId: selectedClasses ? selectedClasses._id : null,
+      age
     };
 
- console.log("newStudent is this",newStudent);
-
-    navigate('/student');
+    try {
+      const response = await createStudent(newStudent);
+      console.log("Student created:", response.data);
+      navigate('/student');
+    } catch (error) {
+      console.error('Error creating student:', error);
+    }
   };
 
   return (
@@ -41,30 +103,97 @@ const StudentForm = ({ addStudent }) => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="className" className="block text-gray-700">
-              Class Name
+            <label htmlFor="age" className="block text-gray-700">
+              Age
             </label>
             <input
-              type="text"
-              id="className"
-              value={className}
-              onChange={(e) => setClassName(e.target.value)}
+              type="number"
+              id="age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="schoolName" className="block text-gray-700">
-              School Name
+          <div className="mb-4 relative">
+            <label htmlFor="className" className="block text-gray-700">
+              Class Name
             </label>
-            <input
-              type="text"
-              id="schoolName"
-              value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded"
-            />
+            <div
+              className="w-full flex items-center px-4 py-2 border border-gray-300 rounded cursor-pointer relative"
+              onClick={() => handleDropdownToggle('class')}
+            >
+              <span className="flex-1">
+                {selectedClasses ? selectedClasses.name : "Select a class"}
+              </span>
+              {selectedClasses && (
+                <AiOutlineClose
+                  className="text-red-500 hover:text-red-700 cursor-pointer mr-2"
+                  onClick={(e) => handleClearSelection(e, 'class')}
+                />
+              )}
+              {dropdownOpen === 'class' ? (
+                <AiOutlineUp className="text-gray-500" />
+              ) : (
+                <AiOutlineDown className="text-gray-500" />
+              )}
+            </div>
+            {dropdownOpen === 'class' && (
+              <div className="absolute bg-white border border-gray-300 rounded mt-1 max-h-40 overflow-y-auto w-full z-10">
+                {classOptions.map((classItem) => (
+                  <div
+                    key={classItem._id}
+                    className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleClassSelect(classItem)}
+                  >
+                    <Checkbox
+                      checked={selectedClasses && selectedClasses._id === classItem._id}
+                      onChange={() => handleClassSelect(classItem)} // Pass `handleClassSelect` directly to the Checkbox component
+                    />
+                    <span className="ml-2">{classItem.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="mb-4 relative">
+            <label className="block text-gray-700">School Name</label>
+            <div
+              className="w-full flex items-center px-4 py-2 border border-gray-300 rounded cursor-pointer relative"
+              onClick={() => handleDropdownToggle('school')}
+            >
+              <span className="flex-1">
+                {selectedSchools ? selectedSchools.name : "Select a school"}
+              </span>
+              {selectedSchools && (
+                <AiOutlineClose
+                  className="text-red-500 hover:text-red-700 cursor-pointer mr-2"
+                  onClick={(e) => handleClearSelection(e, 'school')}
+                />
+              )}
+              {dropdownOpen === 'school' ? (
+                <AiOutlineUp className="text-gray-500" />
+              ) : (
+                <AiOutlineDown className="text-gray-500" />
+              )}
+            </div>
+            {dropdownOpen === 'school' && (
+              <div className="absolute bg-white border border-gray-300 rounded mt-1 max-h-40 overflow-y-auto w-full z-10">
+                {schoolOptions.map((school) => (
+                  <div
+                    key={school._id}
+                    className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleSchoolSelect(school)}
+                  >
+                    <Checkbox
+                      checked={selectedSchools && selectedSchools._id === school._id}
+                      onChange={() => handleSchoolSelect(school)} 
+                    />
+                    <span className="ml-2">{school.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex justify-end space-x-3">
             <button

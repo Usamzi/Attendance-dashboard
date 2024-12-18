@@ -1,20 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getClasses } from "../api/classes/classAuth";
 
 const Classes = () => {
-  const [classes, setClasses] = useState([
-    { className: "Class 1", schoolName: "School 1", totalStudents: 25 },
-    { className: "Class 2", schoolName: "School 2", totalStudents: 30 },
-    { className: "Class 3", schoolName: "School 3", totalStudents: 28 },
-    { className: "Class 4", schoolName: "School 4", totalStudents: 26 },
-    { className: "Class 5", schoolName: "School 5", totalStudents: 24 },
-  ]);
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  const addClass = (newClass) => {
-    setClasses([...classes, newClass]);
-  };
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await getClasses();
+        setClasses(response.data); 
+      } catch (err) {
+        setError(err.message); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchClasses();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
@@ -55,13 +71,13 @@ const Classes = () => {
             {classes.map((classItem, index) => (
               <tr key={index} className="odd:bg-white">
                 <td className="border border-gray-300 px-4 py-2">
-                  {classItem.className}
+                  {classItem.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {classItem.schoolName}
+                  {classItem?.SchoolId?.name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {classItem.totalStudents}
+                  {classItem.totalStudents || 12}
                 </td>
               </tr>
             ))}

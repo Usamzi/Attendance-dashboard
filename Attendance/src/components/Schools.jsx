@@ -1,30 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getSchools } from "../api/school/schoolAuth";
 
 export const Schools = () => {
-  const [schools, setSchools] = useState([
-    {
-      name: "School 1",
-      email: "school1@example.com",
-      phone: "123456789",
-      subscription: "1 Year",
-      location: "Abc Street",
-      isAllowed: false, 
-    },
-  ]);
+  const [schools, setSchools] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchSchools = async () => {
+      try {
+        setLoading(true); 
+        const response = await getSchools(); 
+        setSchools(response.data); 
+        setLoading(false); 
+      } catch (err) {
+        console.error("Error fetching schools:", err);
+        setError("Failed to fetch schools.");
+        setLoading(false); 
+      }
+    };
 
- 
-  const togglePermission = (index) => {
-    const updatedSchools = [...schools];
-    updatedSchools[index].isAllowed = !updatedSchools[index].isAllowed;
-    setSchools(updatedSchools);
-  };
+    fetchSchools();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen bg-gray-100 p-5">Loading schools...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 p-5">
+        <div className="text-red-500">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
-     
       <div className="mb-5">
         <button
           onClick={() => navigate(-1)}
@@ -34,7 +48,7 @@ export const Schools = () => {
         </button>
       </div>
 
-      <div className="max-w-6xl mx-auto bg-white p-5 shadow-md rounded-md">
+      <div className="w-full bg-white p-5 shadow-md rounded-md">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-2xl font-bold text-gray-800">School List</h1>
           <Link
@@ -61,25 +75,9 @@ export const Schools = () => {
               <tr key={index} className="odd:bg-white even:bg-gray-100">
                 <td className="border border-gray-300 px-4 py-2">{school.name}</td>
                 <td className="border border-gray-300 px-4 py-2">{school.email}</td>
-                <td className="border border-gray-300 px-4 py-2">{school.phone}</td>
-                <td className="border border-gray-300 px-4 py-2">{school.subscription}</td>
+                <td className="border border-gray-300 px-4 py-2">{school.phoneNumber}</td>
+                <td className="border border-gray-300 px-4 py-2">{school.SubScription ? "True":"false"}</td>
                 <td className="border border-gray-300 px-4 py-2">{school.location}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <label className="inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={school.isAllowed}
-                      onChange={() => togglePermission(index)}
-                      className="sr-only peer"
-                    />
-                    <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-                     peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5
-                     after:transition-all dark:border-gray-600 peer-checked:bg-yellow-500"></div>
-                    <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {school.isAllowed ? "Yes" : "No"}
-                    </span>
-                  </label>
-                </td>
               </tr>
             ))}
           </tbody>

@@ -1,25 +1,62 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getSchools } from "../api/school/schoolAuth";
+import { createClass } from "../api/classes/classAuth";
+import Checkbox from "./Checkbox/Checkbox"; 
+import { AiOutlineClose, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 
 const ClassForm = () => {
-  const [className, setClassName] = useState('');
-  const [schoolName, setSchoolName] = useState('');
-  const [totalStudents, setTotalStudents] = useState('');
+  const [className, setClassName] = useState("");
+  const [selectedSchools, setSelectedSchools] = useState([]); 
+  const [schoolOptions, setSchoolOptions] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    
-    const newClass = {
-      className,
-      schoolName,
-      totalStudents: parseInt(totalStudents),
+  useEffect(() => {
+    const fetchSchools = async () => {
+      try {
+        const schools = await getSchools();
+        setSchoolOptions(schools.data);
+      } catch (error) {
+        console.error("Error fetching schools:", error);
+      }
     };
 
-    console.log("new class is this",newClass)
-    navigate('/classes');
+    fetchSchools();
+  }, []);
+
+  const handleSchoolSelect = (school) => {
+    setSelectedSchools((prev) => {
+      if (prev.some((item) => item._id === school._id)) {
+        return prev.filter((item) => item._id !== school._id);
+      } else {
+        return [school];
+      }
+    });
+  };
+
+  const handleClearSelection = (e) => {
+    e.stopPropagation();
+    setSelectedSchools([]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newClass = {
+      name:className,
+      SchoolId: selectedSchools.length > 0 ? selectedSchools[0]._id : null, 
+    };
+
+    try {
+      const response = await createClass(newClass);
+      console.log("Class created successfully:", response);
+      navigate("/classes");
+    } catch (error) {
+      console.error("Error creating class:", error);
+      alert("Failed to create class. Please try again.");
+    }
   };
 
   return (
@@ -28,7 +65,9 @@ const ClassForm = () => {
         <h1 className="text-2xl font-bold text-gray-800 mb-5">Add New Class</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="className" className="block text-gray-700">Class Name</label>
+            <label htmlFor="className" className="block text-gray-700">
+              Class Name
+            </label>
             <input
               type="text"
               id="className"
@@ -38,27 +77,45 @@ const ClassForm = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="schoolName" className="block text-gray-700">School Name</label>
-            <input
-              type="text"
-              id="schoolName"
-              value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="totalStudents" className="block text-gray-700">Total Students</label>
-            <input
-              type="number"
-              id="totalStudents"
-              value={totalStudents}
-              onChange={(e) => setTotalStudents(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded"
-            />
+          <div className="mb-4 relative">
+            <label className="block text-gray-700">School Name</label>
+            <div
+              className="w-full flex items-center px-4 py-2 border border-gray-300 rounded cursor-pointer relative"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <span className="flex-1">
+                {selectedSchools.length > 0 ? selectedSchools.map(school => school.name).join(', ') : "Select schools"}
+              </span>
+              {selectedSchools.length > 0 && (
+                <AiOutlineClose
+                  className="text-red-500 hover:text-red-700 cursor-pointer mr-2"
+                  onClick={handleClearSelection}
+                />
+              )}
+              {dropdownOpen ? (
+                <AiOutlineUp className="text-gray-500" />
+              ) : (
+                <AiOutlineDown className="text-gray-500" />
+              )}
+            </div>
+            {dropdownOpen && (
+              <div className="absolute bg-white border border-gray-300 rounded mt-1 max-h-40 overflow-y-auto w-full z-10">
+                {schoolOptions.map((school) => (
+                  <div
+                    key={school.id}
+                    className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleSchoolSelect(school)}
+                  >
+                    <Checkbox
+                      checked={selectedSchools.some((item) => item._id === school._id)}
+                      onClick={() => handleSchoolSelect(school)}
+                      readOnly
+                    />
+                    <span className="ml-2">{school.name}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex justify-end space-x-3">
             <button

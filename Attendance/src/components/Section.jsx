@@ -20,7 +20,7 @@ const Section = () => {
 
       <div className="max-w-6xl mx-auto bg-white p-5 shadow-md rounded-md">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-2xl font-bold text-gray-800">Section List</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Session List</h1>
           <button
             onClick={() => navigate('/add-section')}
             className="px-4 py-2 bg-[#e3ce27] text-white rounded hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300"

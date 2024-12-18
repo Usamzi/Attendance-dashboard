@@ -20,7 +20,7 @@ const SectionForm = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-5">
       <div className="max-w-6xl mx-auto bg-white p-5 shadow-md rounded-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-5">Add New Section</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-5">Add New Session</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="sectionName" className="block text-gray-700">Section Name</label>

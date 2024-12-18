@@ -46,7 +46,7 @@ const Sidebar = () => {
             <Link to='/Section' >
             <div className='flex items-center  gap-2 hover:text-slate-100 cursor-pointer'>
               <div><TbSection /></div>
-              <div className='hidden sm:flex'>Section</div>
+              <div className='hidden sm:flex'>Session</div>
             </div>
             </Link>
             <Link to='/Payments'>

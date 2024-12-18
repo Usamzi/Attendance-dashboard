@@ -12,11 +12,13 @@ import SchoolForm from './SchoolForm';
 import ClassForm from './ClassForm';
 import StudentForm from './StudentForm';
 import SectionForm from './SectionForm';
+import PublicRoutes from '../utils/publicRoutes';
+import PrivateRoutes from '../utils/privateRoutes';
 
 const ProtectedRoutes = () => {
   return (
     <Routes>
-   
+       <Route element={<PrivateRoutes />}>
       <Route element={<Layout />}>
         <Route path="/" element={<Main />} />
         <Route path="/schools" element={<Schools />} />
@@ -29,9 +31,10 @@ const ProtectedRoutes = () => {
         <Route path="/add-section" element={<SectionForm addSection={(data) => console.log(data)} />} />
         <Route path="/payments" element={<Payments />} />
       </Route>
-
-    
+      </Route>
+    <Route element={<PublicRoutes />}>
       <Route path="/login" element={<Login />} />
+      </Route>
     </Routes>
   );
 };
