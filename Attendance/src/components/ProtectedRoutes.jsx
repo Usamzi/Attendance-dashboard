@@ -14,6 +14,7 @@ import StudentForm from './StudentForm';
 import SectionForm from './SectionForm';
 import PublicRoutes from '../utils/publicRoutes';
 import PrivateRoutes from '../utils/privateRoutes';
+import AddPayment from './PaymentFarm';
 
 const ProtectedRoutes = () => {
   return (
@@ -29,7 +30,8 @@ const ProtectedRoutes = () => {
         <Route path="/add-student" element={<StudentForm  />} />
         <Route path="/section" element={<Section />} />
         <Route path="/add-section" element={<SectionForm addSection={(data) => console.log(data)} />} />
-        <Route path="/payments" element={<Payments />} />
+        <Route path="/payments" element={<Payments />} />\
+        <Route path="/add-payment" element={<AddPayment />} />
       </Route>
       </Route>
     <Route element={<PublicRoutes />}>

@@ -86,6 +86,17 @@ const StudentForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
+
+<div className="mb-5">
+      <button
+        onClick={() => navigate(-1)}
+        className="px-4 py-2 bg-[#e3ce27] text-white rounded hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+      >
+        Back
+      </button>
+    </div>
+
+
       <div className="max-w-6xl mx-auto bg-white p-5 shadow-md rounded-md">
         <h1 className="text-2xl font-bold text-gray-800 mb-5">Add New Student</h1>
         <form onSubmit={handleSubmit}>
