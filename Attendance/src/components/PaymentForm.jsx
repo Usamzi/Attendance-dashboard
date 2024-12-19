@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AddPayment = () => {
+const PaymentForm = () => {
   const [paymentId, setPaymentId] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
@@ -109,4 +109,4 @@ const AddPayment = () => {
   );
 };
 
-export default AddPayment;
+export default PaymentForm;

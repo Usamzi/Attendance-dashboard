@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PaymentList = () => {
+const payments = () => {
   const navigate = useNavigate();
 
   return (
@@ -56,4 +56,4 @@ const PaymentList = () => {
   );
 };
 
-export default PaymentList;
+export default payments;
