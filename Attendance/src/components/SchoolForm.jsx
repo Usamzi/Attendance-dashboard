@@ -9,11 +9,11 @@ const SchoolForm = () => {
 
  
   const [toggles, setToggles] = useState({
-    addStudents: "",
-    addSchedules: "",
-    addDevices: "",
-    add1Time: "",
-    scheduleOverride: "",
+    addStudents: false,
+    addSchedules: false,
+    addDevices: false,
+    add1Time: false,
+    scheduleOverride: false,
   });
 
 

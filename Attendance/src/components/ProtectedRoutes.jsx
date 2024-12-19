@@ -28,9 +28,9 @@ const ProtectedRoutes = () => {
         <Route path="/add-class" element={<ClassForm  />} /> 
         <Route path="/student" element={<Student />} />
         <Route path="/add-student" element={<StudentForm  />} />
-        <Route path="/section" element={<Section />} />
-        <Route path="/add-section" element={<SectionForm addSection={(data) => console.log(data)} />} />
-        <Route path="/payments" element={<Payments />} />\
+        <Route path="/session" element={<Section />} />
+        <Route path="/add-session" element={<SectionForm  />} />
+        <Route path="/payments" element={<Payments />} />
         <Route path="/add-payment" element={<AddPayment />} />
       </Route>
       </Route>

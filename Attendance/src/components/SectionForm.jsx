@@ -68,7 +68,7 @@ const SectionForm = () => {
     try {
       await createSession(newSession);
       console.log("Session created:", newSession);
-      navigate("/section");
+      navigate("/session");
     } catch (error) {
       console.error("Error creating session:", error);
     }
