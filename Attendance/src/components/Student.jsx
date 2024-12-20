@@ -10,7 +10,7 @@ const Students = () => {
     const fetchStudents = async () => {
       try {
         const data = await getStudents();
-        setStudents(data.data); // Assuming the API returns an array of students
+        setStudents(data.data); 
       } catch (error) {
         console.error('Error fetching students:', error);
       }

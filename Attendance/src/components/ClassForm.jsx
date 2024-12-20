@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSchools } from "../api/school/schoolAuth";
 import { createClass } from "../api/classes/classAuth";
-import Checkbox from "./Checkbox/Checkbox"; 
+import Checkbox from "./checkbox/Checkbox";
 import { AiOutlineClose, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 
 const ClassForm = () => {

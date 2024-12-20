@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaBell, FaEnvelope, FaSearch } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { logOutUser } from "../api/auth/auth"; 
 import { toast } from "react-toastify"; 
 
@@ -13,8 +13,20 @@ const Navbar = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const url = location.pathname;
-  const newUrl = url.replace("/", "");
+  const url = window.location.pathname;
+  let newUrl = url.replace("/", "");
+
+  if (url === "/add-school") {
+    newUrl = "Add School";
+  }else if( url === "/add-class"){
+    newUrl = "Add Class";
+  }else if( url === "/add-student"){
+    newUrl = "Add Student";
+  }else if( url === "/add-session"){
+    newUrl = "Add Session";
+  }else if( url === "/add-payment"){
+    newUrl = "Add Payment";
+  }
 
   const handleLogout = async () => {
     try {
@@ -34,7 +46,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-200 shadow-md p-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold text-gray-800">{newUrl}</h1>
+      <h1 className="text-2xl font-bold text-gray-800 capitalize">{newUrl || "Dashboard"}</h1>
       <div className="flex items-center space-x-4">
         <FaSearch className="text-gray-600 text-xl cursor-pointer" />
         <FaEnvelope className="text-gray-600 text-xl cursor-pointer" />
@@ -48,18 +60,12 @@ const Navbar = () => {
           />
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
-              <a
-                href="/profile"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
+              <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Profile
-              </a>
-              <a
-                href="/settings"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
+              </Link>
+              <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                 Settings
-              </a>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"

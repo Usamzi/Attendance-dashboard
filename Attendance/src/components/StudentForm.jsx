@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSchools } from '../api/school/schoolAuth';
 import { getClasses } from '../api/classes/classAuth';
-import Checkbox from "./Checkbox/Checkbox"; 
+import Checkbox from './checkbox/Checkbox';
 import { AiOutlineClose, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { createStudent } from '../api/students/studentAuth';
 
@@ -159,7 +159,7 @@ const StudentForm = () => {
                   >
                     <Checkbox
                       checked={selectedClasses && selectedClasses._id === classItem._id}
-                      onChange={() => handleClassSelect(classItem)} // Pass `handleClassSelect` directly to the Checkbox component
+                      onChange={() => handleClassSelect(classItem)} 
                     />
                     <span className="ml-2">{classItem.name}</span>
                   </div>

@@ -9,11 +9,11 @@ const SchoolForm = () => {
 
  
   const [toggles, setToggles] = useState({
-    addStudents: "",
-    addSchedules: "",
-    addDevices: "",
-    add1Time: "",
-    scheduleOverride: "",
+    addStudents: false,
+    addSchedules: false,
+    addDevices: false,
+    add1Time: false,
+    scheduleOverride: false,
   });
 
 
@@ -167,7 +167,7 @@ const SchoolForm = () => {
             )}
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Adress</label>
+            <label className="block text-sm font-medium text-gray-700">Address</label>
             <input
               type="text"
               name="location"

@@ -37,13 +37,19 @@ const Sidebar = () => {
               <div className='hidden sm:flex'>Classes</div>
             </div>
             </Link>
+            <Link to='/Payments'>
+            <div className='flex items-center  gap-2 hover:text-slate-100 cursor-pointer'>
+              <div><HiBanknotes/></div>
+              <div className='hidden sm:flex'>Grade</div>
+            </div>
+            </Link>
             <Link to='/Student'>
             <div className='flex items-center  gap-2 hover:text-slate-100 cursor-pointer'>
               <div><PiStudentDuotone /></div>
               <div className='hidden sm:flex'>Student</div>
             </div>
             </Link> 
-            <Link to='/Section' >
+            <Link to='/session' >
             <div className='flex items-center  gap-2 hover:text-slate-100 cursor-pointer'>
               <div><TbSection /></div>
               <div className='hidden sm:flex'>Session</div>
@@ -55,6 +61,7 @@ const Sidebar = () => {
               <div className='hidden sm:flex'>Payments</div>
             </div>
             </Link>
+            
           </div>
         </div>
         <div className='flex items-center text-md sm:text-xs md:text-sm lg:text-lg px-4 mb-4 gap-2 hover:text-slate-100 cursor-pointer'>
