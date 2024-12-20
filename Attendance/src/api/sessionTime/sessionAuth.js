@@ -8,7 +8,7 @@ export const createSession = async (userData) => {
 };
 
 export const getSessions = async () => {
-    const response = await protectedAPICall(`${urls.sessions}/getAllSessions`, "GET");
+    const response = await handleAPICall(`${urls.sessions}/getAllSessions`, "GET");
     return response;
 };
 

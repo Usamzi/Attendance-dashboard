@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getSchools } from "../api/school/schoolAuth";
+import { Link, useNavigate} from "react-router-dom";
+import { getSchools, deleteSchool } from "../api/school/schoolAuth";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { GoPencil } from "react-icons/go";
+import Modal from "react-responsive-modal"; 
+import "react-responsive-modal/styles.css";
 
 export const Schools = () => {
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSchoolId, setSelectedSchoolId] = useState(null);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchSchools = async () => {
       try {
@@ -28,6 +33,16 @@ export const Schools = () => {
     fetchSchools();
   }, []);
 
+  const handleDelete = async () => {
+    try {
+      await deleteSchool(selectedSchoolId);
+      setSchools(schools.filter((school) => school._id !== selectedSchoolId));
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error deleting school:", err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 p-5">Loading schools...</div>
@@ -42,8 +57,42 @@ export const Schools = () => {
     );
   }
 
+  const schoolUpdate = (item) => {
+    navigate("/add-school", { state: { schoolData: item } });
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-5">
+      <Modal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        center
+        classNames={{
+          overlay: "customOverlay",
+          modal: "customModal",
+        }}
+      >
+        <h2 className="text-lg font-bold text-gray-800 mb-3">Delete School</h2>
+        <p className="text-gray-600 mb-5">
+          Are you sure you want to delete this school? This action cannot be
+          undone.
+        </p>
+        <div className="flex justify-end gap-4">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleDelete}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      </Modal>
+
       <div className="mb-5">
         <button
           onClick={() => navigate(-1)}
@@ -91,8 +140,8 @@ export const Schools = () => {
             </tr>
           </thead>
           <tbody>
-            {schools.map((school, index) => (
-              <tr key={index} className="odd:bg-white even:bg-gray-100">
+            {schools.map((school) => (
+              <tr key={school._id} className="odd:bg-white even:bg-gray-100">
                 <td className="border border-gray-300 px-4 py-2">
                   {school.name}
                 </td>
@@ -103,21 +152,26 @@ export const Schools = () => {
                   {school.phoneNumber}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {school.SubScription ? "True" : "false"}
+                  {school.SubScription ? "True" : "False"}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {school.location}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">data</td>
-                <td className="border border-gray-300 px-4 ">
+                <td className="border border-gray-300 px-4 py-2">
                   <div className="flex items-center justify-center gap-2">
                     <GoPencil
                       size={25}
                       className="text-red-500 hover:text-[#e3ce27] cursor-pointer"
+                      onClick={()=>schoolUpdate(school)}
                     />
                     <MdDelete
                       size={25}
                       className="text-red-500 hover:text-[#e3ce27] cursor-pointer"
+                      onClick={() => {
+                        setSelectedSchoolId(school._id);
+                        setIsModalOpen(true);
+                      }}
                     />
                     <IoEyeSharp
                       size={25}

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getClasses } from "../api/classes/classAuth";
+import { getClasses, deleteClass } from "../api/classes/classAuth";
+import { IoEyeSharp } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import { GoPencil } from "react-icons/go";
 
 const Classes = () => {
   const [classes, setClasses] = useState([]);
@@ -13,23 +16,34 @@ const Classes = () => {
     const fetchClasses = async () => {
       try {
         const response = await getClasses();
-        setClasses(response.data); 
+        setClasses(response.data);
       } catch (err) {
-        setError(err.message); 
+        setError(err.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchClasses();
   }, []);
 
+  const handleDelete = async (classId) => {
+    try {
+      await deleteClass(classId);
+      setClasses((prevClasses) =>
+        prevClasses.filter((classItem) => classItem._id !== classId)
+      );
+    } catch (err) {
+      alert(`Failed to delete class: ${err.message}`);
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; 
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -65,6 +79,9 @@ const Classes = () => {
               <th className="border border-gray-300 px-4 py-2 text-left">
                 Total Students
               </th>
+              <th className="border border-gray-300 px-4 py-2 text-left">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -78,6 +95,22 @@ const Classes = () => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {classItem.totalStudents || 12}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <div className="flex items-center justify-center gap-2">
+                    <GoPencil
+                      size={25}
+                      className="text-red-500 hover:text-[#e3ce27] cursor-pointer"
+                    />
+                    <MdDelete
+                      size={25}
+                      className="text-red-500 hover:text-[#e3ce27] cursor-pointer"
+                    />
+                    <IoEyeSharp
+                      size={25}
+                      className="text-gray-500 hover:text-[#e3ce27] cursor-pointer"
+                    />
+                  </div>
                 </td>
               </tr>
             ))}
