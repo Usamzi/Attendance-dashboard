@@ -25,7 +25,6 @@ function PrivateRoutes() {
   const token = useAuth();
   const user = useUser();
 
-  // Check if the user is authenticated and has the correct role
   if (!token || (user?.role !== "superAdmin" && user?.role !== "school")) {
     return <Navigate to="/login" replace />;
   }

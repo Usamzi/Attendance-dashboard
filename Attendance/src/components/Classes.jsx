@@ -4,6 +4,7 @@ import { getClasses, deleteClass } from "../api/classes/classAuth";
 import { IoEyeSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { GoPencil } from "react-icons/go";
+import { useUser } from "../utils/useUser";
 
 const Classes = () => {
   const [classes, setClasses] = useState([]);
