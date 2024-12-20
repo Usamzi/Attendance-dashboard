@@ -45,7 +45,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-200 shadow-md p-4 flex justify-between items-center">
+    <nav className="bg-primary shadow-md p-4 flex justify-between items-center">
       <h1 className="text-2xl font-bold text-gray-800 capitalize">{newUrl || "Dashboard"}</h1>
       <div className="flex items-center space-x-4">
         <FaSearch className="text-gray-600 text-xl cursor-pointer" />
