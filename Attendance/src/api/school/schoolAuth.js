@@ -7,7 +7,7 @@ export const registerSchool = async (userData) => {
 };
 
 export const getSchools = async () => {
-  const response = await handleAPICall(`${urls.schools}/getSchools`, "GET");
+  const response = await protectedAPICall(`${urls.schools}/getSchools`, "GET");
   return response;
 };
 export const deleteSchool = async (id) => {

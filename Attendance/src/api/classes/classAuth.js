@@ -2,7 +2,7 @@ import { protectedAPICall,handleAPICall } from "../handleApi";
 import urls from "./classUrls";
 
 export const getClasses = async () => {
-    const response = await handleAPICall(`${urls.classes}/getClass`, "GET");
+    const response = await protectedAPICall(`${urls.classes}/getClass`, "GET");
     return response;
 };
 
